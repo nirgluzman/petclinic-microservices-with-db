@@ -6,4 +6,6 @@ RUN tar -xzf dockerize.tar.gz
 RUN chmod +x dockerize
 COPY ./target/*.jar /app.jar
 EXPOSE 8082
+
+# The java.security.egd JVM startup property affects how the SecureRandom class initializes.
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
