@@ -21,5 +21,10 @@ generated/
 .factorypath
 .project
 
-# Terraform
-**/.terraform/
+# Local .terraform directories & files
+**/.terraform/*
+*.lock.*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
