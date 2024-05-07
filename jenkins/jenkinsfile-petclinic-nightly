@@ -141,7 +141,7 @@ pipeline {
                 sh 'ansible-playbook -vvv --connection=local --inventory 127.0.0.1, --extra-vars "workspace=${WORKSPACE} master_public_ip=${MASTER_PUBLIC_IP}" ./ansible/playbooks/pb_run_selenium_jobs.yaml'
             }
         }
- }
+    }
 
     post {
         always {
@@ -162,6 +162,12 @@ pipeline {
             echo "Delete existing key pair using AWS CLI"
             sh "aws ec2 delete-key-pair --region ${AWS_REGION} --key-name ${ANS_KEYPAIR}"
             sh "rm -rf ${ANS_KEYPAIR}"
+        }
+
+        success {
+            script {
+               slackSend channel: '#petclinic', color: ' #439FE0', message: 'Nightly-pipeline has completed successfully !', teamDomain: 'devopstrainin-gm12494', tokenCredentialId: 'jenkins-slack'
+            }
         }
     }
 }
