@@ -8,9 +8,14 @@ metadata:
     io.kompose.service: mysql-server
   name: mysql-server
 spec:
-  ports:
-    - name: "3306"
-      port: 3306
-      targetPort: 3306
-  selector:
-    io.kompose.service: mysql-server
+  # # RDS is a Pod in our kubernetes cluster.
+  # ports:
+  #   - name: "3306"
+  #     port: 3306
+  #     targetPort: 3306
+  # selector:
+  #   io.kompose.service: mysql-server
+
+  # RDS is an AWS service.
+  type: ExternalName # connecting to an external service (AWS RDS).
+  externalName: petclinic.c0h1zpvnuper.us-east-1.rds.amazonaws.com # AWS RDS endpoint.
