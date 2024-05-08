@@ -165,8 +165,16 @@ pipeline {
         }
 
         success {
+            echo "Slack notification - pipeline completed successfully"
             script {
-               slackSend channel: '#petclinic', color: ' #439FE0', message: 'Nightly-pipeline has completed successfully !', teamDomain: 'devopstrainin-gm12494', tokenCredentialId: 'jenkins-slack'
+               slackSend channel: '#petclinic', color: '#439FE0', message: 'Nightly-pipeline has completed successfully !', teamDomain: 'devopstrainin-gm12494', tokenCredentialId: 'jenkins-slack'
+            }
+        }
+
+        failure {
+            echo "Slack notification - pipeline failed; at least one step failed"
+            script {
+               slackSend channel: '#petclinic', color: '#439FE0', message: 'Nightly-pipeline failed !', teamDomain: 'devopstrainin-gm12494', tokenCredentialId: 'jenkins-slack'
             }
         }
     }
