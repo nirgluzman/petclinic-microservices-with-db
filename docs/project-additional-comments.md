@@ -2,6 +2,18 @@
 https://github.com/nirgluzman/petclinic-microservices-with-db
 
 
+## Gitflow Workflow
+
+- The Gitflow Workflow defines a strict branching model designed around the project release.
+  https://www.youtube.com/watch?v=1SXpE08hvGs
+
+
+## Semantic Versioning
+
+- Semantic versioning (aka SemVer) is a widely-adopted version scheme that encodes a version by a
+  three-part version number (Major.Minor.Patch). https://semver.org/
+
+
 ## Jenkins Pipeline overview
 
 developer -> GitHub -> mvn -> JAR -> Dockerfile -> image -> AWS ECR -> K8s deployment -> Helm chart -> Helm chart repo (S3) -> Helm install -> NEW APP
@@ -31,15 +43,18 @@ developer -> GitHub -> mvn -> JAR -> Dockerfile -> image -> AWS ECR -> K8s deplo
   * initContainers run first to prepare the environment for the main container.
   * Sidecar works alongside the main container
 
+
 ### Pull an Image from a Private Registry
 - We must authenticate with the private repository (e.g. ECR) before we can pull/push images.
 - In this project, we create a kubernetes secret from exciting credentials in `~/.docker/config.json` (file that holds an authorization token).
   https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 
+
 ### Ingress
 - Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
   https://kubernetes.io/docs/concepts/services-networking/ingress/
   https://kubernetes.github.io/ingress-nginx/deploy/
+
 
 ### Kompose
   https://kompose.io/
@@ -84,8 +99,30 @@ sudo usermod -s /bin/bash jenkins
 sudo su - jenkins
 ```
 
+## Docker - ENTRYPOINT
 
-## Docker utility containers
+- ENTRYPOINT instruction is used to set executables that will always run when the container is initiated.
+
+## Docker - dockerize
+https://github.com/jwilder/dockerize
+
+- Utility to simplify running applications in docker containers.
+
+- It allows you to:
+** generate application configuration files at container startup time from templates and container environment variables.
+** Tail multiple log files to stdout and/or stderr
+** Wait for other services to be available using TCP, HTTP(S), unix before starting the main process.
+
+- Note that `depends_on` just checks that the container is up and running (but not ready to serve requests).
+
+
+## Docker - BusyBox
+
+- BusyBox combines tiny versions of many common UNIX utilities.
+- Busybox docker image is useful if one is building a container for which busybox can fulfill its dependency chain without needing a full Linux distro.
+
+
+## Docker - Utility containers
 
 - Utility containers are containers that are used to provide utility functions, rather than installing those services on local machines.
   These can be useful for simplifying the management and operation of containerized environments.
