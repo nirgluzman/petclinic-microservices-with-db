@@ -1,3 +1,6 @@
+# manifest file to be copied to Jenkins $HOME --> /var/lib/jenkins
+#
+
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
