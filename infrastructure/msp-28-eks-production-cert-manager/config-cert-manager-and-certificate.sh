@@ -25,4 +25,4 @@ AWS_REGION=$AWS_REGION helm upgrade --install \
   --version v1.14.4
 
 # install ClusterIssuer
-kubectl apply -f tls-cluster-issuer-prod.yml
+kubectl apply -f tls-cluster-issuer-prod.yaml
