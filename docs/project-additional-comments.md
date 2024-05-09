@@ -1,23 +1,20 @@
 ## GitHub repo
-https://github.com/nirgluzman/petclinic-microservices-with-db
 
+https://github.com/nirgluzman/petclinic-microservices-with-db
 
 ## Gitflow Workflow
 
 - The Gitflow Workflow defines a strict branching model designed around the project release.
   https://www.youtube.com/watch?v=1SXpE08hvGs
 
-
 ## Semantic Versioning
 
 - Semantic versioning (aka SemVer) is a widely-adopted version scheme that encodes a version by a
   three-part version number (Major.Minor.Patch). https://semver.org/
 
-
 ## Jenkins Pipeline overview
 
 developer -> GitHub -> mvn -> JAR -> Dockerfile -> image -> AWS ECR -> K8s deployment -> Helm chart -> Helm chart repo (S3) -> Helm install -> NEW APP
-
 
 ## Terraform
 
@@ -40,32 +37,30 @@ developer -> GitHub -> mvn -> JAR -> Dockerfile -> image -> AWS ECR -> K8s deplo
   https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 
 - Sidecar container vs. initContainer
-  * initContainers run first to prepare the environment for the main container.
-  * Sidecar works alongside the main container
-
+  - initContainers run first to prepare the environment for the main container.
+  - Sidecar works alongside the main container
 
 ### Pull an Image from a Private Registry
+
 - We must authenticate with the private repository (e.g. ECR) before we can pull/push images.
 - In this project, we create a kubernetes secret from exciting credentials in `~/.docker/config.json` (file that holds an authorization token).
   https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 
-
 ### Ingress
+
 - Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
   https://kubernetes.io/docs/concepts/services-networking/ingress/
   https://kubernetes.github.io/ingress-nginx/deploy/
 
-
 ### Kompose
-  https://kompose.io/
-  Kompose is a conversion tool from docker-compose to Kubernetes manifest files.
 
+https://kompose.io/
+Kompose is a conversion tool from docker-compose to Kubernetes manifest files.
 
 ## Jenkins
 
 - Jenkins being slow - make the following change in:
-Dashboard > Manage Jenkins > System > Jenkins Location    >>> http://jenkins:8080/
-
+  Dashboard > Manage Jenkins > System > Jenkins Location >>> http://jenkins:8080/
 
 ```bash (pwd : /home/ec2-user)
 cat /etc/passwd       # Jenkins user exists  ===>>> does not have a shell (bin/bash) , because it is not a root or regular user.
@@ -91,9 +86,10 @@ ls                                # files and directories from github
 - Jenkins Environment Variables, jenkins:8080/env-vars
 
 - Create an environment variable within a Jenkins Pipeline
-  ```env.ABC``` --> creates a variable ABC to be available across Jenkins stages.
+  `env.ABC` --> creates a variable ABC to be available across Jenkins stages.
 
 - Switch user to `jenkins`:
+
 ```bash
 sudo usermod -s /bin/bash jenkins
 sudo su - jenkins
@@ -104,23 +100,22 @@ sudo su - jenkins
 - ENTRYPOINT instruction is used to set executables that will always run when the container is initiated.
 
 ## Docker - dockerize
+
 https://github.com/jwilder/dockerize
 
 - Utility to simplify running applications in docker containers.
 
 - It allows you to:
-** generate application configuration files at container startup time from templates and container environment variables.
-** Tail multiple log files to stdout and/or stderr
-** Wait for other services to be available using TCP, HTTP(S), unix before starting the main process.
+  ** generate application configuration files at container startup time from templates and container environment variables.
+  ** Tail multiple log files to stdout and/or stderr
+  \*\* Wait for other services to be available using TCP, HTTP(S), unix before starting the main process.
 
 - Note that `depends_on` just checks that the container is up and running (but not ready to serve requests).
-
 
 ## Docker - BusyBox
 
 - BusyBox combines tiny versions of many common UNIX utilities.
 - Busybox docker image is useful if one is building a container for which busybox can fulfill its dependency chain without needing a full Linux distro.
-
 
 ## Docker - Utility containers
 
@@ -132,35 +127,34 @@ https://github.com/jwilder/dockerize
 ```bash
 docker run --rm -v $HOME/.m2:/root/.m2 -v `pwd`:/app -w /app maven:3.8-openjdk-11 mvn clean test
 ```
-* maven:3.8-openjdk-11 Docker image includes two key components:
+
+- maven:3.8-openjdk-11 Docker image includes two key components:
   -- Maven 3.8 build automation tool for Java projects.
   -- OpenJDK 11, Open Source Java Development Kit version 11.
   This Docker image provides a ready-made environment that includes both the tools needed to build and manage Java projects.
 
-* When executing this command within Jenkis, it uses the Jenkins user context:
+- When executing this command within Jenkis, it uses the Jenkins user context:
   -- Jenkins home directory, $HOME =/var/lib/jenkins
   -- Jenkins workspace where it executes the build, `pwd` = /var/lib/jenkins/workspace/petclinic-ci-job
 
-* We use the following Docker bind mounts:
+- We use the following Docker bind mounts:
   -- `pwd`:/app -w /app
-     Maven project files are downloaded from GitHub and stored in Jenkins workspace directory.
+  Maven project files are downloaded from GitHub and stored in Jenkins workspace directory.
   -- $HOME/.m2:/root/.m2
-     Local repository for Maven is stored in user home directory:
-     Jenkins -> $HOME/.m2
-     Docker container -> /root/.m2
-
+  Local repository for Maven is stored in user home directory:
+  Jenkins -> $HOME/.m2
+  Docker container -> /root/.m2
 
 ## Sellenium Test Nightly - explained
 
-1) Launch 3 instances (terraform)
-2) Deploy Kubernetes cluster (ansible)
-3) Create Docker images
-4) Manifest files (kubernetes)
-5) Helm chart (stored on S3)
-6) Deploy application
-7) run sellenium test
-8) Delete infratructure
-
+1. Launch 3 instances (terraform)
+2. Deploy Kubernetes cluster (ansible)
+3. Create Docker images
+4. Manifest files (kubernetes)
+5. Helm chart (stored on S3)
+6. Deploy application
+7. run sellenium test
+8. Delete infratructure
 
 ## Ansible
 
@@ -172,33 +166,35 @@ docker run --rm -v $HOME/.m2:/root/.m2 -v `pwd`:/app -w /app maven:3.8-openjdk-1
 - Pass variable from one playbook to another playbook:
   https://www.unixarena.com/2019/05/passing-variable-from-one-playbook-to-another-playbook-ansible.html/
 
-
 ## Helm
+
 - `helm install` vs. `helm upgrade`
   https://kodekloud.com/community/t/helm-intall-vs-helm-upgrade/209362
 
-
 ### Set up a Helm chart repository in Amazon S3
+
 - https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-a-helm-v3-chart-repository-in-amazon-s3.html
   https://artifacthub.io/packages/helm-plugin/s3/s3
 
-- Install the helm-s3 plugin for Amazon S3.
+- Install `Helm S3 plugin for Amazon S3`.
+  Note that all Helm plugins are installed in $HOME/.local/share/helm/plugins folder. I.e., to use Helm plugin, it's required to install for any user.
 
 ```bash
 helm plugin install https://github.com/hypnoglow/helm-s3.git
 ```
 
-- On some systems (including in our case) we need to install ``Helm S3 plugin`` as Jenkins user in order to be able to use S3 with pipeline script.
+- Install `Helm S3 plugin` as Jenkins user in order to be able to use S3 with Pipeline script.
 
-``` bash
+```bash
 sudo su -s /bin/bash jenkins
 export PATH=$PATH:/usr/local/bin
 helm version
 helm plugin install https://github.com/hypnoglow/helm-s3.git
 exit
 ```
-- ``Initialize`` the Amazon S3 Helm repository.
-   This command creates an ``index.yaml`` file in the target to track all the chart information that is stored at that location.
+
+- `Initialize` the Amazon S3 Helm repository.
+  This command creates an `index.yaml` file in the target to track all the chart information that is stored at that location.
 
 ```bash
 AWS_REGION=us-east-1 helm s3 init s3://petclinic-helm-charts-<put-your-name>/stable/myapp
@@ -210,7 +206,6 @@ AWS_REGION=us-east-1 helm s3 init s3://petclinic-helm-charts-<put-your-name>/sta
 AWS_REGION=us-east-1 helm repo add stable-petclinicapp s3://petclinic-helm-charts-<put-your-name>/stable/myapp/
 ```
 
-
 ## Linux - General
 
 - `Netcat` ( nc ) command is a command-line utility for reading and writing data between two computer networks.
@@ -221,36 +216,41 @@ AWS_REGION=us-east-1 helm repo add stable-petclinicapp s3://petclinic-helm-chart
 ```bash
 envsubst < values-template.yaml > values.yaml
 ```
+
 ```text
 values-template.yaml -> IMAGE_TAG_ADMIN_SERVER: "${IMAGE_TAG_ADMIN_SERVER}"
 export IMAGE_TAG_ADMIN_SERVER=046402772087.dkr.ecr.us-east-1.amazonaws.com/admin-server:latest
 ```
 
 ## Rancher & RKE
+
 https://ranchermanager.docs.rancher.com/
 https://rke.docs.rancher.com/config-options/cloud-providers/aws
 
 - Rancher is a Kubernetes management tool to deploy and run clusters.
 - RKE solves the problem of installation complexity for Rancher.
 - The process:
-  * RKE (Jenkis Server) -> creates a K8s cluster on remote machines to be later used by Rancher.
-  * Helm (Jenkins Server) -> installs Rancher on this cluster.
-
+  - RKE (Jenkis Server) -> creates a K8s cluster on remote machines to be later used by Rancher.
+  - Helm (Jenkins Server) -> installs Rancher on this cluster.
 
 ## Slack integration with Jenkins
+
 https://medium.com/@skmswetha22/a-guide-to-integrating-slack-with-jenkins-d78bf43f131e
 https://kunzleigh.com/creating-a-slack-notifier-using-jenkins-pipeline/
 https://plugins.jenkins.io/slack/
 https://www.jenkins.io/doc/pipeline/steps/slack/
 
 Configurations in Slack:
+
 - Configure Webhook in Slack
 
 Configurations in Jenkins:
+
 - Required plugins:
-  * Slack Notification Plugin (Integrates Jenkins with Slack, allows publishing build statuses, messages and files to Slack channels)
-  * Script Security Plugin (?)
-  * Display URL API (?)
+
+  - Slack Notification Plugin (Integrates Jenkins with Slack, allows publishing build statuses, messages and files to Slack channels)
+  - Script Security Plugin (?)
+  - Display URL API (?)
 
 - Add Slack Token as `Global Credential` (Secret text).
 
@@ -266,8 +266,8 @@ Configurations in Jenkins:
         }
 ```
 
-
 ## Let's Encrypt (Automated Certificate Management Environment)
+
 https://letsencrypt.org/about/
 
 - Let’s Encrypt is a free, automated, and open certificate authority (CA), run for the public’s benefit.
@@ -277,8 +277,8 @@ https://letsencrypt.org/about/
 
 - Therefore, if we add the certificate part to the pipeline, it might result in some problems.
 
-
 ## Resizing EC2 EBS
+
 https://docs.aws.amazon.com/ebs/latest/userguide/recognize-expanded-volume-linux.html
 https://medium.com/@nikhil.nagarajappa/configuring-jenkins-to-use-additional-disks-558affaac95c
 
